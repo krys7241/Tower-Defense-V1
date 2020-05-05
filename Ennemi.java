@@ -111,10 +111,10 @@ public abstract class Ennemi implements Info {
             public void handle(ActionEvent actionEvent) {
                 if(e.ennemivivant()) {
                     marche.stop();
-                    pane.getChildren().remove(imageview);
                     list.remove(e);
                     e.gainmort(r);
                     compte = compte + 1;
+                    pane.getChildren().remove(imageview);
                 }
             }
         }));
@@ -132,7 +132,13 @@ public abstract class Ennemi implements Info {
         });
     }
 
-    public abstract Point2D getposition();
+    public Point2D getposition() {
+        Bounds position = imageview.localToScene(imageview.getBoundsInLocal());
+        double x = position.getMaxX() - image.getWidth()/2;
+        double y = position.getMaxY() - image.getHeight()/2;
+        Point2D centre = new Point2D(x, y);
+        return centre;
+    }
 
     public abstract void afficheinfo(Pane p);
 }
