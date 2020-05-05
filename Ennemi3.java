@@ -19,14 +19,6 @@ public class Ennemi3 extends Ennemi {
         super("ennemi rapide", 100, 50, 30, 30, "ennemi3.png");
     }
 
-    public javafx.geometry.Point2D getposition() {
-        Bounds position = imageview.localToScene(imageview.getBoundsInLocal());
-        double x = position.getMaxX() - 18;
-        double y = position.getMaxY() - 25;
-        javafx.geometry.Point2D centre = new Point2D(x, y);
-        return centre;
-    }
-
     public void afficheinfo(Pane p) {
         Text t = new Text(nom + "\n" + "point de vie: " + vie +"/100" + "\n" + "attaque: " + attaque);
         Timeline vieennemi = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
@@ -43,11 +35,9 @@ public class Ennemi3 extends Ennemi {
         imageview.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(getposition().getX()>280 || getposition().getY()>250) {
-                    infoennemi.setTranslateX(getposition().getX());
-                    infoennemi.setTranslateY(getposition().getY());
-                    p.getChildren().add(infoennemi);
-                }
+                infoennemi.setTranslateX(getposition().getX()+(image.getWidth()/2));
+                infoennemi.setTranslateY(getposition().getY()-(image.getHeight()/2));
+                p.getChildren().add(infoennemi);
             }
         });
 
@@ -57,5 +47,25 @@ public class Ennemi3 extends Ennemi {
                 p.getChildren().remove(infoennemi);
             }
         });
+        Timeline debug = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (ennemivivant()){
+                    if (p.getChildren().contains(infoennemi)){
+                        p.getChildren().remove(infoennemi);
+                    }
+                }
+            }
+        }));
+        debug.setCycleCount(1);
+        debug.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (!ennemivivant()){
+                    debug.play();
+                }
+            }
+        });
+        debug.play();
     }
 }
