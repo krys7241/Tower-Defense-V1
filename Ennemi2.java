@@ -44,7 +44,9 @@ public class Ennemi2 extends Ennemi {
         imageview.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                p.getChildren().remove(infoennemi);
+                if (!ennemivivant()) {
+                    p.getChildren().remove(infoennemi);
+                }
             }
         });
         Timeline debug = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
